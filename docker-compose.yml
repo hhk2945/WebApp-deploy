@@ -1,0 +1,35 @@
+version: '2'
+services:
+  webapp:
+    build: .
+    image: wsdg4/webapp
+    container_name: meme-webapp
+    ports:
+      - "80:80"
+    networks:
+      - meme-nw
+    depends_on:
+      - elasticsearch
+      - postgres
+      - redis
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: Dockerfile.es-ko
+    image: wsdg4/elasticsearch
+    container_name: meme-es
+    networks:
+      - meme-nw
+  postgres:
+    image: postgres
+    container_name: meme-db
+    networks:
+      - meme-nw
+  redis:
+    image: redis
+    container_name: meme-redis
+    networks:
+      - meme-nw
+
+networks:
+  meme-nw:
